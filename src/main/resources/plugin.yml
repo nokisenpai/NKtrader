@@ -1,0 +1,8 @@
+name: Defaultpl
+version: ${project.version}
+main: fr.darkvodou.defaultpl.main
+api-version: 1.17
+prefix: [ NKT ]
+authors: [ Darkvodou, more ]
+description: Trad plugin
+website: localhost
