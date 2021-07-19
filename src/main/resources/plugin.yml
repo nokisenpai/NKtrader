@@ -1,8 +1,8 @@
-name: Defaultpl
+name: NKtrader
 version: ${project.version}
-main: fr.darkvodou.defaultpl.main
+main: fr.darkvodou.NKtrader.NKtrader
 api-version: 1.17
 prefix: [ NKT ]
 authors: [ Darkvodou, more ]
-description: Trad plugin
+description: Trade plugin
 website: localhost
