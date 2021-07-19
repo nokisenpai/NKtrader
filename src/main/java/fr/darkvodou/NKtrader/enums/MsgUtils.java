@@ -9,6 +9,7 @@ public enum MsgUtils
 
 	PREFIX_ERROR(PREFIX.toString() + ChatColor.DARK_RED),
 	PREFIX_SUCCESS(PREFIX.toString() + ChatColor.GREEN),
+	PREFIX_USAGE(PREFIX.toString() + ChatColor.GOLD),
 
 	// #################
 	// Errors

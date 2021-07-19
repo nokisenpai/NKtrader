@@ -3,10 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>NKtrader</groupId>
   <artifactId>NKtrader</artifactId>
-  <name>NKtrader</name>
-  <version>1.0</version>
-  <description>Trad plugin</description>
-  <url>localhost</url>
+  <version>0.0.1</version>
   <build>
     <defaultGoal>clean package install</defaultGoal>
     <plugins>
@@ -37,16 +34,12 @@
       <id>spigotmc-repo</id>
       <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
-    <repository>
-      <id>sonatype</id>
-      <url>https://oss.sonatype.org/content/groups/public/</url>
-    </repository>
   </repositories>
   <dependencies>
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.17.1-R0.1-SNAPSHOT</version>
+      <version>1.16.5-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>
@@ -73,7 +66,7 @@
     </dependency>
   </dependencies>
   <properties>
-    <java.version>1.8</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
 </project>

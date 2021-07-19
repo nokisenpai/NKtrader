@@ -1,5 +1,6 @@
 package fr.darkvodou.NKtrader;
 
+import fr.darkvodou.NKtrader.cmds.addTraderCmd;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class NKtrader extends JavaPlugin
@@ -9,7 +10,9 @@ public final class NKtrader extends JavaPlugin
 	@Override
 	public void onEnable()
 	{
-		// Plugin startup logic
+
+		//Register commands
+		getCommand("addtrader").setExecutor(new addTraderCmd());
 
 	}
 
