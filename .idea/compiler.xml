@@ -10,10 +10,6 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="defaultpl" target="1.8" />
-      <module name="fr.Darkvodou.NKtrader" target="8" />
-      <module name="fr.Darkvodou.NKtrader (1)" target="1.5" />
-      <module name="fr.Darkvodou.NKtrader (2)" target="1.5" />
       <module name="NKtrader" target="8" />
     </bytecodeTargetLevel>
   </component>

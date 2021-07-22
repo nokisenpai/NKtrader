@@ -1,8 +1,9 @@
 name: NKtrader
 version: ${project.version}
 main: fr.darkvodou.NKtrader.NKtrader
-api-version: 1.17
-prefix: [ NKT ]
-authors: [ Darkvodou, more ]
+authors: [ Darkvodou ]
 description: Trade plugin
-website: localhost
+commands:
+  addtrader:
+    description: "add a new trader block or entity"
+    usage: /<command> <entity|block> [-n <name>] [-w <world> <x> <y> <z> ]
