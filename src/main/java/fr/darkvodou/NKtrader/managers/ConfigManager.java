@@ -20,7 +20,6 @@ public class ConfigManager
 	public static String PREFIX = null;
 	public static String SERVERNAME = null;
 
-
 	// Constructor
 	public ConfigManager(FileConfiguration config)
 	{

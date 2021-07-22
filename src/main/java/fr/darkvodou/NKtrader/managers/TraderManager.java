@@ -10,12 +10,11 @@ import static fr.darkvodou.NKtrader.enums.Msgmanager.*;
 public class TraderManager
 {
 	private HashMap<String, Trader> traders = new HashMap<>();
+	public ConsoleCommandSender console;
 
-	public ConsoleCommandSender consoleCommandSender;
-
-	public TraderManager(ConsoleCommandSender consoleCommandSender)
+	public TraderManager(ConsoleCommandSender console)
 	{
-		this.consoleCommandSender = consoleCommandSender;
+		this.console = console;
 	}
 
 	public boolean hasTrader(String name)
@@ -26,23 +25,25 @@ public class TraderManager
 	public void addTrader(String name, Trader trader)
 	{
 		if(hasTrader(name))
-			consoleCommandSender.sendMessage("" + ERROR_TRADER_IS_CONTAINED);
-		else
 		{
-			traders.put(name, trader);
+			console.sendMessage(ERROR_TRADER_IS_CONTAINED.toString());
+
+			return;
 		}
+
+		traders.put(name, trader);
 	}
 
 	public void removeTrader(String name)
 	{
 		if(!hasTrader(name))
 		{
-			consoleCommandSender.sendMessage("" + ERROR_TRADER_NOT_FOUND + name);
+			console.sendMessage(ERROR_TRADER_NOT_FOUND + name);
+
+			return;
 		}
-		else
-		{
-			traders.remove(name);
-		}
+
+		traders.remove(name);
 	}
 
 	public Trader getTrader(String name)

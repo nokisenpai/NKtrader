@@ -10,10 +10,8 @@ public final class NKtrader extends JavaPlugin
 	@Override
 	public void onEnable()
 	{
-
 		//Register commands
 		getCommand("addtrader").setExecutor(new addTraderCmd());
-
 	}
 
 	@Override

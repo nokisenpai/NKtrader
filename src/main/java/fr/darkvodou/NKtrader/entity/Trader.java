@@ -1,37 +1,26 @@
 package fr.darkvodou.NKtrader.entity;
 
-import org.bukkit.World;
+import org.bukkit.Location;
 
 public class Trader
 {
-	private String name;
-	private double x;
-	private double y;
-	private double z;
 	private String id;
-	private World world;
+	private String name;
+	private Location location;
 	private String type;
 	private String entityType;
 	private String blockType;
 
-	public Trader(String name, double x, double y, double z, World world)
+	public Trader(String name, Location location)
 	{
+		this.id = location.getWorld().getName() + location.getX() + location.getY() + location.getZ();
 		this.name = name;
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.id = name + x + y + z;
-		this.world = world;
+		this.location = location;
 	}
 
 	public void setId(String id)
 	{
 		this.id = id;
-	}
-
-	public void setWorld(World world)
-	{
-		this.world = world;
 	}
 
 	public void setType(String type)
@@ -54,26 +43,9 @@ public class Trader
 		this.name = name;
 	}
 
-	public void setX(double x)
+	public void setLocation(Location location)
 	{
-		this.x = x;
-	}
-
-	public void setY(double y)
-	{
-		this.y = y;
-	}
-
-	public void setZ(double z)
-	{
-		this.z = z;
-	}
-
-	public void setCoords(double x, double y, double z)
-	{
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		this.location = location;
 	}
 
 	public String getName()
@@ -81,29 +53,9 @@ public class Trader
 		return name;
 	}
 
-	public double getX()
-	{
-		return x;
-	}
-
-	public double getY()
-	{
-		return y;
-	}
-
-	public double getZ()
-	{
-		return z;
-	}
-
 	public String getId()
 	{
 		return id;
-	}
-
-	public World getWorld()
-	{
-		return world;
 	}
 
 	public String getType()
@@ -119,5 +71,10 @@ public class Trader
 	public String getBlockType()
 	{
 		return blockType;
+	}
+
+	public Location getLocation()
+	{
+		return location;
 	}
 }
