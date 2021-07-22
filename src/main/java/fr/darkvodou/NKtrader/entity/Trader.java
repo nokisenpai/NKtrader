@@ -5,16 +5,15 @@ import org.bukkit.Location;
 public class Trader
 {
 	private String id;
-	private String name;
 	private Location location;
+	private String name;
 	private String type;
 	private String entityType;
 	private String blockType;
 
-	public Trader(String name, Location location)
+	public Trader(Location location)
 	{
 		this.id = location.getWorld().getName() + location.getX() + location.getY() + location.getZ();
-		this.name = name;
 		this.location = location;
 	}
 

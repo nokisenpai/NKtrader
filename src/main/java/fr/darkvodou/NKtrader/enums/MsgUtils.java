@@ -5,7 +5,7 @@ import org.bukkit.ChatColor;
 public enum MsgUtils
 {
 
-	PREFIX(ChatColor.DARK_GRAY + "(" + ChatColor.DARK_RED + ChatColor.BOLD + "NKT" + ChatColor.RESET + ChatColor.DARK_GRAY + ") " + ChatColor.RESET),
+	PREFIX(ChatColor.DARK_GRAY + "(" + ChatColor.DARK_RED + ChatColor.BOLD + "NKT" + ChatColor.RESET + ChatColor.DARK_GRAY + ") "),
 
 	PREFIX_ERROR(PREFIX.toString() + ChatColor.DARK_RED),
 	PREFIX_SUCCESS(PREFIX.toString() + ChatColor.GREEN),

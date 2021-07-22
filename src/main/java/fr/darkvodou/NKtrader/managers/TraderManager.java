@@ -17,38 +17,38 @@ public class TraderManager
 		this.console = console;
 	}
 
-	public boolean hasTrader(String name)
+	public boolean hasTrader(String id)
 	{
-		return traders.containsKey(name);
+		return traders.containsKey(id);
 	}
 
-	public void addTrader(String name, Trader trader)
+	public void addTrader(String id, Trader trader)
 	{
-		if(hasTrader(name))
+		if(hasTrader(id))
 		{
-			console.sendMessage(ERROR_TRADER_IS_CONTAINED.toString());
+			console.sendMessage(ERROR_TRADER_IS_CONTAINED + " : " + id);
 
 			return;
 		}
 
-		traders.put(name, trader);
+		traders.put(id, trader);
 	}
 
-	public void removeTrader(String name)
+	public void removeTrader(String id)
 	{
-		if(!hasTrader(name))
+		if(!hasTrader(id))
 		{
-			console.sendMessage(ERROR_TRADER_NOT_FOUND + name);
+			console.sendMessage(ERROR_TRADER_NOT_FOUND + id);
 
 			return;
 		}
 
-		traders.remove(name);
+		traders.remove(id);
 	}
 
-	public Trader getTrader(String name)
+	public Trader getTrader(String id)
 	{
-		return traders.get(name);
+		return traders.get(id);
 	}
 
 	public HashMap<String, Trader> getTraders()
