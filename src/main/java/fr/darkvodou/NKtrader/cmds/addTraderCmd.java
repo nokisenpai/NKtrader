@@ -10,14 +10,12 @@ import static fr.darkvodou.NKtrader.enums.Usages.*;
 
 public class addTraderCmd implements CommandExecutor
 {
-
 	@Override
 	public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args)
 	{
 		// ##################
 		// Verifications
 		// ##################
-
 		if(sender instanceof ConsoleCommandSender)
 		{
 			return true;
@@ -48,8 +46,12 @@ public class addTraderCmd implements CommandExecutor
 		return true;
 	}
 
+	private boolean hasAdminPermissions(CommandSender sender)
+	{
+		return sender.hasPermission("" + NKT_ADMIN) || sender.hasPermission("" + NKT_ALL);
+	}
 	private boolean hasAddTraderPermissions(CommandSender sender)
 	{
-		return sender.hasPermission("" + NKT_ADD_TRADER);
+		return sender.hasPermission("" + NKT_ADD_TRADER) || hasAdminPermissions(sender);
 	}
 }

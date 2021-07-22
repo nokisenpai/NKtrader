@@ -10,7 +10,6 @@ import static fr.darkvodou.NKtrader.enums.Msgmanager.*;
 public class TraderManager
 {
 	private HashMap<String, Trader> traders = new HashMap<>();
-	public HashMap<String, Trader> getTraders(){return this.traders;}
 	public ConsoleCommandSender consoleCommandSender;
 
 	public TraderManager(ConsoleCommandSender consoleCommandSender)
@@ -38,6 +37,7 @@ public class TraderManager
 		}
 	}
 	public Trader getTrader(String name){return traders.get(name);}
+	public HashMap<String, Trader> getTraders(){return this.traders;}
 
 	//TODO Load Traders in bdd
 }
