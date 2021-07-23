@@ -25,12 +25,14 @@ public class addTraderCmd implements CommandExecutor
 			{
 				sender.sendMessage(ERROR_HAS_NOT_PERM + " node : " + NKT_ADD_TRADER);
 
-				return false;
+				return true;
 			}
 
 			if(args.length == 0)
 			{
 				sender.sendMessage("" + NKT_USAGE_ADDTRADER);
+
+				return true;
 			}
 
 			if(args.length >= 1)

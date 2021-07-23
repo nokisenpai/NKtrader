@@ -13,7 +13,7 @@ public class Trader
 
 	public Trader(Location location)
 	{
-		this.id = location.getWorld().getName() + location.getX() + location.getY() + location.getZ();
+		this.id = location.getWorld().getName() + location.getBlockX() + location.getBlockY() + location.getBlockZ();
 		this.location = location;
 	}
 

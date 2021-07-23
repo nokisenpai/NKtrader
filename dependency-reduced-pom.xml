@@ -6,6 +6,12 @@
   <version>0.0.1</version>
   <build>
     <defaultGoal>clean package install</defaultGoal>
+    <resources>
+      <resource>
+        <filtering>true</filtering>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>

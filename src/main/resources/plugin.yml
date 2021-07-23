@@ -6,4 +6,4 @@ description: Trade plugin
 commands:
   addtrader:
     description: "add a new trader block or entity"
-    usage: /<command> <entity|block> [-n <name>] [-w <world> <x> <y> <z> ]
+    usage: /<command> <entity|block> [-n <name>] [-w <world> <x> <y> <z>]
