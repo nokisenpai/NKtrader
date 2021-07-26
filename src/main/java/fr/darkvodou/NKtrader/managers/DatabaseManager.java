@@ -114,22 +114,14 @@ public class DatabaseManager
 			// if all tables are missing
 			if(count == 0)
 			{
-				console.sendMessage(PREFIX_ERROR + " Missing table(s). First start.");
 				resultat.close();
 				ps.close();
+				console.sendMessage(PREFIX_ERROR + " Missing table(s). First start.");
+
 				return false;
 			}
 			resultat.close();
 			ps.close();
-
-			req = "SHOW TABLES FROM " + configManager.getDbName() + " LIKE 'DV_Players'";
-			ps = bdd.prepareStatement(req);
-			resultat = ps.executeQuery();
-
-			if(resultat.next())
-			{
-				count++;
-			}
 
 			// if 1 or more tables are missing
 			if(count < table.size())
@@ -181,8 +173,7 @@ public class DatabaseManager
 						+ "`z` DOUBLE NOT NULL ,"
 						+ "`name` VARCHAR NOT NULL ,"
 						+ "`type` VARCHAR NOT NULL ,"
-						+ "`entity_type` VARCHAR NULL ,"
-						+ "`block_type` VARCHAR NULL ,"
+						+ "`data_type` VARCHAR NULL ,"
 						+ "`world_name` VARCHAR NOT NULL ,"
 						+ "PRIMARY KEY (`id`))"
 						+ "ENGINE = InnoDB";

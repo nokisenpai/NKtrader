@@ -1,10 +1,14 @@
 package fr.darkvodou.NKtrader.managers;
 
 import fr.darkvodou.NKtrader.entity.Trader;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.ConsoleCommandSender;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
@@ -46,21 +50,7 @@ public class TraderManager
 		String name = trader.getName();
 		String type = trader.getType();
 		String world_name = trader.getLocation().getWorld().getName();
-		String block_type = "NULL";
-		String entity_type = "NULL";
-
-		if(type.equals("block"))
-		{
-			block_type = trader.getBlockType();
-		}
-
-		if(type.equals("entity"))
-		{
-			entity_type = trader.getEntityType();
-		}
-
-		String finalEntity_type = entity_type;
-		String finalBlock_type = block_type;
+		String dataType = trader.getDataType();
 
 		queueManager.addToQueue(o -> {
 			Connection bdd = null;
@@ -71,7 +61,8 @@ public class TraderManager
 			{
 				bdd = DatabaseManager.getConnection();
 
-				req = "INSERT INTO " + DatabaseManager.table.TRADER + " (`id`,`x`,`y`,`z`,`name`,`type`,`entity_type`,`block_type`,`world_name`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				req = "INSERT INTO " + DatabaseManager.table.TRADER
+						+ " (`id`,`x`,`y`,`z`,`name`,`type`,`dataType`,`world_name`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 				ps = bdd.prepareStatement(req);
 				ps.setString(1, id);
 				ps.setInt(2, x);
@@ -79,9 +70,8 @@ public class TraderManager
 				ps.setInt(4, z);
 				ps.setString(5, name);
 				ps.setString(6, type);
-				ps.setString(7, finalEntity_type);
-				ps.setString(8, finalBlock_type);
-				ps.setString(9, world_name);
+				ps.setString(7, dataType);
+				ps.setString(8, world_name);
 
 				ps.executeUpdate();
 				ps.close();
@@ -105,7 +95,29 @@ public class TraderManager
 
 			return;
 		}
-		//TODO remove in the bdd
+
+		queueManager.addToQueue(o -> {
+			Connection bdd = null;
+			PreparedStatement ps = null;
+			String req = null;
+
+			try
+			{
+				bdd = DatabaseManager.getConnection();
+
+				req = "DELETE " + DatabaseManager.table.TRADER + "WHERE `id` = `" + id + "`";
+				ps = bdd.prepareStatement(req);
+
+				ps.execute();
+				ps.close();
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace();
+			}
+
+			return null;
+		});
 		traders.remove(id);
 	}
 
@@ -126,8 +138,44 @@ public class TraderManager
 
 	public boolean load()
 	{
-		return true;
-	}
+		Connection bdd = null;
+		ResultSet resultat = null;
+		PreparedStatement ps = null;
+		String req = null;
 
-	//TODO Load Traders in bdd
+		bdd = DatabaseManager.getConnection();
+
+		try
+		{
+			req = "SELECT * FROM" + DatabaseManager.table.TRADER;
+
+			ps = bdd.prepareStatement(req);
+			resultat = ps.executeQuery();
+
+			while(resultat.next())
+			{
+				String world_name = resultat.getString("world_name");
+				World world = Bukkit.getWorld(world_name);
+				double x = resultat.getDouble("x");
+				double y = resultat.getDouble("y");
+				double z = resultat.getDouble("z");
+				String name = resultat.getString("name");
+				Location location = new Location(world, x, y, z);
+				String type = resultat.getString("type");
+				String dataType = resultat.getString("data_type");
+				Trader trader = new Trader(location, type, dataType);
+
+				traders.put(trader.getId(), trader).setName(name);
+			}
+			ps.close();
+
+			return true;
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+
+			return false;
+		}
+	}
 }

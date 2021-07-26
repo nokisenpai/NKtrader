@@ -8,43 +8,49 @@ public class Trader
 	private Location location;
 	private String name;
 	private String type;
-	private String entityType;
-	private String blockType;
+	private String dataType;
 
-	public Trader(Location location)
+	public Trader(Location location,String type,String dataType)
 	{
 		this.id = location.getWorld().getName() + location.getBlockX() + location.getBlockY() + location.getBlockZ();
 		this.location = location;
+		this.type = type;
+		this.dataType = dataType;
 	}
 
-	public void setId(String id)
+	public Trader setId(String id)
 	{
 		this.id = id;
+
+		return this;
 	}
 
-	public void setType(String type)
+	public Trader setType(String type)
 	{
 		this.type = type;
+
+		return this;
 	}
 
-	public void setEntityType(String entityType)
+	public Trader setDataType(String dataType)
 	{
-		this.entityType = entityType;
+		this.dataType = dataType;
+
+		return this;
 	}
 
-	public void setBlockType(String blockType)
-	{
-		this.blockType = blockType;
-	}
-
-	public void setName(String name)
+	public Trader setName(String name)
 	{
 		this.name = name;
+
+		return this;
 	}
 
-	public void setLocation(Location location)
+	public Trader setLocation(Location location)
 	{
 		this.location = location;
+
+		return this;
 	}
 
 	public String getName()
@@ -62,14 +68,9 @@ public class Trader
 		return type;
 	}
 
-	public String getEntityType()
+	public String getDataType()
 	{
-		return entityType;
-	}
-
-	public String getBlockType()
-	{
-		return blockType;
+		return dataType;
 	}
 
 	public Location getLocation()

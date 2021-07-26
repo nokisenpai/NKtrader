@@ -57,13 +57,20 @@ public class Manager
 
 	public boolean loadManagers(NKtrader instance)
 	{
-		if(!configManager.loadConfig())
+		if(!configManager.load())
 		{
 			instance.disablePlugin();
 
 			return false;
 		}
 		if(!databaseManager.load())
+		{
+			instance.disablePlugin();
+
+			return false;
+		}
+
+		if(!traderManager.load())
 		{
 			instance.disablePlugin();
 

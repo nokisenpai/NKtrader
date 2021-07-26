@@ -2,7 +2,7 @@
 
 # MySQL connection (required)
 use-mysql: true
-table-prefix: NKtrader_
+table-prefix: nktrader_
 host: localhost
 port: 3306
 dbName: dev_minecraft

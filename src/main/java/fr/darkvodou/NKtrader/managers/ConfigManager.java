@@ -27,7 +27,7 @@ public class ConfigManager
 		this.config = config;
 	}
 
-	public boolean loadConfig()
+	public boolean load()
 	{
 		// Check if "use-mysql" is to true. Plugin only use MySQL database.
 		if(!config.getBoolean("use-mysql"))
