@@ -1,0 +1,16 @@
+# NKtrader
+
+# MySQL connection (required)
+use-mysql: true
+table-prefix: nktrader_
+host: localhost
+port: 3306
+dbName: dev_minecraft
+user: root
+password: 
+
+
+# Options
+
+# The same name gave to Bungee config
+server-name: 'world'

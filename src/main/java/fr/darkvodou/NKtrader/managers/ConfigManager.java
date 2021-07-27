@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import static fr.darkvodou.NKtrader.enums.Msgmanager.ERROR_CONFIG_USE_SQL_IS_FALSE;
+import static fr.darkvodou.NKtrader.enums.Msgmanager.*;
 
 public class ConfigManager
 {
@@ -17,7 +17,7 @@ public class ConfigManager
 	private String dbUser = null;
 	private String dbPassword = null;
 
-	public static String PREFIX = null;
+	public static String PREFIXTABLE = null;
 	public static String SERVERNAME = null;
 
 	// Constructor
@@ -27,12 +27,12 @@ public class ConfigManager
 		this.config = config;
 	}
 
-	public boolean loadConfig()
+	public boolean load()
 	{
-		// Check if "use-mysql" is to true. Plugin only use MySQL database.
 		if(!config.getBoolean("use-mysql"))
 		{
-			console.sendMessage(""+ERROR_CONFIG_USE_SQL_IS_FALSE);
+			console.sendMessage("" + ERROR_CONFIG_USE_SQL_IS_FALSE);
+
 			return false;
 		}
 
@@ -44,18 +44,13 @@ public class ConfigManager
 		dbPassword = config.getString("password");
 
 		// Get prefix used for table name on database
-		PREFIX = config.getString("table-prefix", "dvessentials_");
+		PREFIXTABLE = config.getString("table-prefix", "nktrader_");
 
 		// Get server name gave to bungeecord config
 		SERVERNAME = config.getString("server-name", "world");
 
-
 		return true;
 	}
-
-	// ######################################
-	// Getters (only)
-	// ######################################
 
 	public String getDbHost()
 	{

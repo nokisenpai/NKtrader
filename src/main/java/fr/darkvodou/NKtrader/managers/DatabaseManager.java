@@ -3,13 +3,12 @@ package fr.darkvodou.NKtrader.managers;
 import fr.darkvodou.NKtrader.NKtrader;
 import fr.darkvodou.NKtrader.utils.SQLConnect;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 
 import java.sql.*;
 
 import static fr.darkvodou.NKtrader.enums.MsgUtils.*;
-import static fr.darkvodou.NKtrader.enums.MsgUtils.PREFIX_ERROR;
+import static fr.darkvodou.NKtrader.managers.ConfigManager.PREFIXTABLE;
 
 public class DatabaseManager
 {
@@ -26,9 +25,7 @@ public class DatabaseManager
 
 	public enum table
 	{
-		PT(fr.darkvodou.NKtrader.managers.ConfigManager.PREFIX + "pt"), PLAYERS("DV_players"), PLAYER_DATA(
-			fr.darkvodou.NKtrader.managers.ConfigManager.PREFIX + "player_data"), MAIL(
-			fr.darkvodou.NKtrader.managers.ConfigManager.PREFIX + "mail");
+		TRADER(PREFIXTABLE + "trader");
 
 		private String name = "";
 
@@ -48,12 +45,10 @@ public class DatabaseManager
 		}
 	}
 
-	public boolean loadDatabase()
+	public boolean load()
 	{
-		// Setting database informations
 		SQLConnect.setInfo(configManager.getDbHost(), configManager.getDbPort(), configManager.getDbName(), configManager.getDbUser(), configManager.getDbPassword());
 
-		// Try to connect to database
 		try
 		{
 			bdd = SQLConnect.getHikariDS().getConnection();
@@ -63,29 +58,28 @@ public class DatabaseManager
 			bdd = null;
 			console.sendMessage(PREFIX_ERROR + " Error while attempting database connexion. Verify your access informations in config.yml");
 			e.printStackTrace();
+
 			return false;
 		}
 
 		try
 		{
-			// Check if tables already exist on database
 			if(!existTables())
 			{
-				// Create database structure if not exist
 				createTable();
 			}
-
 		}
 		catch(SQLException e)
 		{
 			console.sendMessage(PREFIX_ERROR + " Error while creating database structure. (Error#A.2.002)");
+
 			return false;
 		}
 
 		return true;
 	}
 
-	public void unloadDatabase()
+	public void unload()
 	{
 		if(bdd != null)
 		{
@@ -103,7 +97,7 @@ public class DatabaseManager
 	private boolean existTables() throws SQLException
 	{
 		// Select all tables beginning with the prefix
-		String req = "SHOW TABLES FROM " + configManager.getDbName() + " LIKE '" + fr.darkvodou.NKtrader.managers.ConfigManager.PREFIX + "%'";
+		String req = "SHOW TABLES FROM " + configManager.getDbName() + " LIKE '" + PREFIXTABLE + "%'";
 		ResultSet resultat = null;
 		PreparedStatement ps = null;
 
@@ -120,27 +114,20 @@ public class DatabaseManager
 			// if all tables are missing
 			if(count == 0)
 			{
-				console.sendMessage(PREFIX_ERROR + " Missing table(s). First start.");
 				resultat.close();
 				ps.close();
+				console.sendMessage(PREFIX_ERROR + " Missing table(s). First start.");
+
 				return false;
 			}
 			resultat.close();
 			ps.close();
 
-			req = "SHOW TABLES FROM " + configManager.getDbName() + " LIKE 'DV_Players'";
-			ps = bdd.prepareStatement(req);
-			resultat = ps.executeQuery();
-			if(resultat.next())
-			{
-				count++;
-			}
-
 			// if 1 or more tables are missing
 			if(count < table.size())
 			{
-				console.sendMessage(PREFIX_ERROR
-						+ " Missing table(s). Please don't alter tables name or structure in database. (Error#main.Storage.002)");
+				console.sendMessage(PREFIX_ERROR + " Missing table(s). Please don't alter tables name or structure in database. (Error#main.Storage.002)");
+
 				return false;
 			}
 		}
@@ -155,6 +142,7 @@ public class DatabaseManager
 			{
 				ps.close();
 			}
+
 			if(resultat != null)
 			{
 				resultat.close();
@@ -177,42 +165,24 @@ public class DatabaseManager
 
 			try
 			{
-				/*// Creating players table
-				req = "CREATE TABLE IF NOT EXISTS `" + table.PLAYERS + "` (`id` int(11) NOT NULL AUTO_INCREMENT,"
-						+ "`uuid` varchar(40) NOT NULL,`pseudo` varchar(40) NOT NULL,`server` varchar(40) ,PRIMARY KEY (`id`),"
-						+ "UNIQUE KEY `uuid_unique` (`uuid`) USING BTREE) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-				s = bdd.createStatement();
-				s.execute(req);
-				s.close();
+				req = "CREATE TABLE IF NOT EXISTS `"
+						+ table.TRADER
+						+ "`( `id` VARCHAR(100) NOT NULL ,"
+						+ "`x` DOUBLE NOT NULL ,"
+						+ "`y` DOUBLE NOT NULL ,"
+						+ "`z` DOUBLE NOT NULL ,"
+						+ "`world_name` VARCHAR(100) NOT NULL ,"
+						+ "`name` VARCHAR(100) NULL ,"
+						+ "`type` VARCHAR(100) NOT NULL ,"
+						+ "`data_type` VARCHAR(100) NOT NULL ,"
+						+ "PRIMARY KEY (`id`))"
+						+ "ENGINE = InnoDB";
 
-				// Creating pt table
-				req = "CREATE TABLE IF NOT EXISTS `" + table.PT + "` (`id` int(11) NOT NULL AUTO_INCREMENT,"
-						+ "`player_id` int(11) NOT NULL,`cmd` VARCHAR(1000) NULL,`item` VARCHAR(100) NULL, PRIMARY KEY (`id`),"
-						+ "UNIQUE INDEX `pt_player_id_item_UNIQUE` (`player_id` ASC, `item` ASC) USING BTREE) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-				s = bdd.createStatement();
-				s.execute(req);
-				s.close();
-
-				// Creating player_data table
-				req = "CREATE TABLE IF NOT EXISTS `" + table.PLAYER_DATA + "` ( `player_id` INT NOT NULL ,"
-						+ " `bettermending` BOOLEAN NOT NULL DEFAULT FALSE ," + " `fly_speed` FLOAT NOT NULL ," + " `walk_speed` FLOAT NOT NULL ,"
-						+ " UNIQUE (`player_id`)) ENGINE = InnoDB;";
-				s = bdd.createStatement();
-				s.execute(req);
-				s.close();
-
-				*/
-
-				// Creating mail table
-				req = "CREATE TABLE IF NOT EXISTS `" + table.MAIL
-						+ "` ( `id` INT NOT NULL AUTO_INCREMENT, `receiver` VARCHAR(40) NOT NULL, `sender` VARCHAR(40) "
-						+ "NOT NULL, `date_of_receipt` DATE NOT NULL, `mail` TEXT NOT NULL, INDEX(`id`)) ENGINE = InnoDB";
 				s = bdd.createStatement();
 				s.execute(req);
 				s.close();
 
 				console.sendMessage(PREFIX_SUCCESS + " Database structure created.");
-
 			}
 			catch(SQLException e)
 			{

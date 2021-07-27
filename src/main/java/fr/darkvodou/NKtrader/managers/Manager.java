@@ -1,6 +1,5 @@
 package fr.darkvodou.NKtrader.managers;
 
-
 import fr.darkvodou.NKtrader.NKtrader;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
@@ -11,7 +10,7 @@ public class Manager
 	private QueueManager queueManager = null;
 	private ConfigManager configManager = null;
 	private DatabaseManager databaseManager = null;
-
+	private TraderManager traderManager = null;
 
 	public Manager(NKtrader instance)
 	{
@@ -19,33 +18,63 @@ public class Manager
 		queueManager = new QueueManager();
 		configManager = new ConfigManager(instance.getConfig());
 		databaseManager = new DatabaseManager(configManager);
+		traderManager = new TraderManager(console, this);
 	}
 
-	// ######################################
-	// Getters & Setters
-	// ######################################
-
-	// Console
 	public ConsoleCommandSender getConsole()
 	{
 		return console;
 	}
 
-	// QueueManager
-	public fr.darkvodou.NKtrader.managers.QueueManager getQueueManager()
+	public QueueManager getQueueManager()
 	{
 		return queueManager;
 	}
 
-	// PluginManager
-	public fr.darkvodou.NKtrader.managers.ConfigManager getConfigManager()
+	public ConfigManager getConfigManager()
 	{
 		return configManager;
 	}
 
-	// DatabaseManager
-	public fr.darkvodou.NKtrader.managers.DatabaseManager getDatabaseManager()
+	public DatabaseManager getDatabaseManager()
 	{
 		return databaseManager;
+	}
+
+	public TraderManager getTraderManager()
+	{
+		return traderManager;
+	}
+
+	public void unloadManagers()
+	{
+		databaseManager.unload();
+		traderManager.unload();
+	}
+
+	public boolean loadManagers(NKtrader instance)
+	{
+		if(!configManager.load())
+		{
+			instance.disablePlugin();
+
+			return false;
+		}
+
+		if(!databaseManager.load())
+		{
+			instance.disablePlugin();
+
+			return false;
+		}
+
+		if(!traderManager.load())
+		{
+			instance.disablePlugin();
+
+			return false;
+		}
+
+		return true;
 	}
 }
