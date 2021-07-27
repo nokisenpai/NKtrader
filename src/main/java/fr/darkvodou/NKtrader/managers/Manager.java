@@ -1,6 +1,5 @@
 package fr.darkvodou.NKtrader.managers;
 
-
 import fr.darkvodou.NKtrader.NKtrader;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
@@ -19,35 +18,33 @@ public class Manager
 		queueManager = new QueueManager();
 		configManager = new ConfigManager(instance.getConfig());
 		databaseManager = new DatabaseManager(configManager);
-		traderManager = new TraderManager(console,this);
+		traderManager = new TraderManager(console, this);
 	}
 
-	// Console
 	public ConsoleCommandSender getConsole()
 	{
 		return console;
 	}
 
-	// QueueManager
 	public QueueManager getQueueManager()
 	{
 		return queueManager;
 	}
 
-	// PluginManager
 	public ConfigManager getConfigManager()
 	{
 		return configManager;
 	}
 
-	// DatabaseManager
 	public DatabaseManager getDatabaseManager()
 	{
 		return databaseManager;
 	}
 
-	//TraderManager
-	public TraderManager getTraderManager(){ return traderManager;}
+	public TraderManager getTraderManager()
+	{
+		return traderManager;
+	}
 
 	public void unloadManagers()
 	{
@@ -63,6 +60,7 @@ public class Manager
 
 			return false;
 		}
+
 		if(!databaseManager.load())
 		{
 			instance.disablePlugin();

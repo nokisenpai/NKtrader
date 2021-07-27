@@ -19,18 +19,21 @@ public class TraderManager
 	private HashMap<String, Trader> traders = new HashMap<>();
 	private ConsoleCommandSender console;
 	private QueueManager queueManager = null;
-	private DatabaseManager databaseManager = null;
 
 	public TraderManager(ConsoleCommandSender console, Manager manager)
 	{
 		this.console = console;
 		this.queueManager = manager.getQueueManager();
-		this.databaseManager = manager.getDatabaseManager();
 	}
 
 	public boolean hasTrader(String id)
 	{
 		return traders.containsKey(id);
+	}
+
+	public boolean hasTrader(Location location)
+	{
+		return traders.containsKey(location.getWorld().getName() + location.getBlockX() + location.getBlockY() + location.getBlockZ());
 	}
 
 	public void addTrader(Trader trader)
@@ -44,14 +47,6 @@ public class TraderManager
 			return;
 		}
 
-		int x = trader.getLocation().getBlockX();
-		int y = trader.getLocation().getBlockY();
-		int z = trader.getLocation().getBlockZ();
-		String name = trader.getName();
-		String type = trader.getType();
-		String world_name = trader.getLocation().getWorld().getName();
-		String dataType = trader.getDataType();
-
 		queueManager.addToQueue(o -> {
 			Connection bdd = null;
 			PreparedStatement ps = null;
@@ -62,16 +57,16 @@ public class TraderManager
 				bdd = DatabaseManager.getConnection();
 
 				req = "INSERT INTO " + DatabaseManager.table.TRADER
-						+ " (`id`,`x`,`y`,`z`,`name`,`type`,`dataType`,`world_name`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+						+ " (`id`, `x`, `y`, `z`, `world_name`, `name`, `type`, `dataType`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 				ps = bdd.prepareStatement(req);
 				ps.setString(1, id);
-				ps.setInt(2, x);
-				ps.setInt(3, y);
-				ps.setInt(4, z);
-				ps.setString(5, name);
-				ps.setString(6, type);
-				ps.setString(7, dataType);
-				ps.setString(8, world_name);
+				ps.setInt(2, trader.getLocation().getBlockX());
+				ps.setInt(3, trader.getLocation().getBlockY());
+				ps.setInt(4, trader.getLocation().getBlockZ());
+				ps.setString(5, trader.getLocation().getWorld().getName());
+				ps.setString(6, trader.getName());
+				ps.setString(7, trader.getType());
+				ps.setString(8, trader.getDataType());
 
 				ps.executeUpdate();
 				ps.close();
@@ -105,8 +100,9 @@ public class TraderManager
 			{
 				bdd = DatabaseManager.getConnection();
 
-				req = "DELETE " + DatabaseManager.table.TRADER + "WHERE `id` = `" + id + "`";
+				req = "DELETE " + DatabaseManager.table.TRADER + " WHERE `id` = ?";
 				ps = bdd.prepareStatement(req);
+				ps.setString(1, id);
 
 				ps.execute();
 				ps.close();
@@ -118,6 +114,7 @@ public class TraderManager
 
 			return null;
 		});
+
 		traders.remove(id);
 	}
 

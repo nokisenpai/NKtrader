@@ -171,10 +171,10 @@ public class DatabaseManager
 						+ "`x` DOUBLE NOT NULL ,"
 						+ "`y` DOUBLE NOT NULL ,"
 						+ "`z` DOUBLE NOT NULL ,"
-						+ "`name` VARCHAR NOT NULL ,"
-						+ "`type` VARCHAR NOT NULL ,"
-						+ "`data_type` VARCHAR NULL ,"
-						+ "`world_name` VARCHAR NOT NULL ,"
+						+ "`world_name` VARCHAR(100) NOT NULL ,"
+						+ "`name` VARCHAR(100) NULL ,"
+						+ "`type` VARCHAR(100) NOT NULL ,"
+						+ "`data_type` VARCHAR(100) NOT NULL ,"
 						+ "PRIMARY KEY (`id`))"
 						+ "ENGINE = InnoDB";
 
