@@ -8,7 +8,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import java.sql.*;
 
 import static fr.darkvodou.NKtrader.enums.MsgUtils.*;
-import static fr.darkvodou.NKtrader.managers.ConfigManager.PREFIX_CONFIG;
+import static fr.darkvodou.NKtrader.managers.ConfigManager.PREFIXTABLE;
 
 public class DatabaseManager
 {
@@ -25,7 +25,7 @@ public class DatabaseManager
 
 	public enum table
 	{
-		TRADER(PREFIX_CONFIG + "trader");
+		TRADER(PREFIXTABLE + "trader");
 
 		private String name = "";
 
@@ -97,7 +97,7 @@ public class DatabaseManager
 	private boolean existTables() throws SQLException
 	{
 		// Select all tables beginning with the prefix
-		String req = "SHOW TABLES FROM " + configManager.getDbName() + " LIKE '" + PREFIX_CONFIG + "%'";
+		String req = "SHOW TABLES FROM " + configManager.getDbName() + " LIKE '" + PREFIXTABLE + "%'";
 		ResultSet resultat = null;
 		PreparedStatement ps = null;
 

@@ -39,7 +39,6 @@ public final class NKtrader extends JavaPlugin
 	@Override
 	public void onDisable()
 	{
-		// Plugin shutdown logic
 		manager.unloadManagers();
 	}
 

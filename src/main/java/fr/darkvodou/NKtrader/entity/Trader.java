@@ -10,7 +10,7 @@ public class Trader
 	private String type;
 	private String dataType;
 
-	public Trader(Location location,String type,String dataType)
+	public Trader(Location location, String type, String dataType)
 	{
 		this.id = location.getWorld().getName() + location.getBlockX() + location.getBlockY() + location.getBlockZ();
 		this.location = location;

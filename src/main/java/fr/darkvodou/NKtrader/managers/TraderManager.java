@@ -139,7 +139,7 @@ public class TraderManager
 	public boolean load()
 	{
 		Connection bdd = null;
-		ResultSet resultat = null;
+		ResultSet result = null;
 		PreparedStatement ps = null;
 		String req = null;
 
@@ -150,22 +150,15 @@ public class TraderManager
 			req = "SELECT * FROM" + DatabaseManager.table.TRADER;
 
 			ps = bdd.prepareStatement(req);
-			resultat = ps.executeQuery();
+			result = ps.executeQuery();
 
-			while(resultat.next())
+			while(result.next())
 			{
-				String world_name = resultat.getString("world_name");
-				World world = Bukkit.getWorld(world_name);
-				double x = resultat.getDouble("x");
-				double y = resultat.getDouble("y");
-				double z = resultat.getDouble("z");
-				String name = resultat.getString("name");
-				Location location = new Location(world, x, y, z);
-				String type = resultat.getString("type");
-				String dataType = resultat.getString("data_type");
-				Trader trader = new Trader(location, type, dataType);
+				String world_name = result.getString("world_name");
+				Location location = new Location(Bukkit.getWorld(world_name), result.getDouble("x"), result.getDouble("y"), result.getDouble("z"));
+				Trader trader = new Trader(location, result.getString("type"), result.getString("data_type"));
 
-				traders.put(trader.getId(), trader).setName(name);
+				traders.put(trader.getId(), trader.setName(result.getString("name")));
 			}
 			ps.close();
 
