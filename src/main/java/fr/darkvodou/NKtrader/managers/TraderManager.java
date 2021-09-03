@@ -36,7 +36,7 @@ public class TraderManager
 		return traders.containsKey(location.getWorld().getName() + location.getBlockX() + location.getBlockY() + location.getBlockZ());
 	}
 
-	public void addTrader(Trader trader)
+	public boolean addTrader(Trader trader)
 	{
 		String id = trader.getId();
 
@@ -44,7 +44,7 @@ public class TraderManager
 		{
 			console.sendMessage(ERROR_TRADER_IS_CONTAINED + " : " + id);
 
-			return;
+			return false;
 		}
 
 		queueManager.addToQueue(o -> {
@@ -57,7 +57,7 @@ public class TraderManager
 				bdd = DatabaseManager.getConnection();
 
 				req = "INSERT INTO " + DatabaseManager.table.TRADER
-						+ " (`id`, `x`, `y`, `z`, `world_name`, `name`, `type`, `dataType`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+						+ " (`id`, `x`, `y`, `z`, `world_name`, `name`, `type`, `data_type`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 				ps = bdd.prepareStatement(req);
 				ps.setString(1, id);
 				ps.setInt(2, trader.getLocation().getBlockX());
@@ -80,6 +80,7 @@ public class TraderManager
 		});
 
 		traders.put(id, trader);
+		return true;
 	}
 
 	public void removeTrader(String id)
@@ -144,7 +145,7 @@ public class TraderManager
 
 		try
 		{
-			req = "SELECT * FROM" + DatabaseManager.table.TRADER;
+			req = "SELECT * FROM " + DatabaseManager.table.TRADER;
 
 			ps = bdd.prepareStatement(req);
 			result = ps.executeQuery();
