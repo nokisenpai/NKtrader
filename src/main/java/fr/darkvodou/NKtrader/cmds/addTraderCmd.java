@@ -1,18 +1,13 @@
 package fr.darkvodou.NKtrader.cmds;
 
 import fr.darkvodou.NKtrader.entity.Trader;
-import fr.darkvodou.NKtrader.enums.MsgUtils;
-import fr.darkvodou.NKtrader.enums.Permissions;
 import fr.darkvodou.NKtrader.managers.Manager;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.*;
-
-import java.util.Objects;
 
 import static fr.darkvodou.NKtrader.enums.MsgUtils.*;
 import static fr.darkvodou.NKtrader.enums.Msgmanager.ERROR_TRADER_IS_CONTAINED;
@@ -24,10 +19,10 @@ import static java.lang.Double.parseDouble;
 
 public class addTraderCmd implements CommandExecutor
 {
-	private Manager manager;
-	private Location location = null;
+	private final Manager manager;
 	private String name = "";
 	private World world = Bukkit.getWorld("world");
+	private String type;
 
 	public addTraderCmd(Manager manager)
 	{
@@ -37,6 +32,8 @@ public class addTraderCmd implements CommandExecutor
 	@Override
 	public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args)
 	{
+		Location location;
+
 		if(sender instanceof ConsoleCommandSender)
 		{
 			return true;
@@ -53,23 +50,23 @@ public class addTraderCmd implements CommandExecutor
 
 			if(args.length == 0)
 			{
-				sender.sendMessage("" + NKT_USAGE_ADDTRADER);
+				sender.sendMessage("1 :" + NKT_USAGE_ADDTRADER);
 
 				return true;
 			}
 
 			if(!args[0].equals("entity") && !args[0].equals("block"))
 			{
-				sender.sendMessage(ERROR_BAD_ARGS + " :\n" + NKT_USAGE_ADDTRADER);
+				sender.sendMessage(ERROR_BAD_ARGS + " 2:\n" + NKT_USAGE_ADDTRADER);
 
 				return true;
 			}
 
 			if(args.length >= 2)
 			{
-				if(!args[1].equals("-n") && !args[1].equals("-w"))
+				if(!args[1].equals("-n") && !args[1].equals("-w") && !args[1].equals("-t"))
 				{
-					sender.sendMessage(ERROR_BAD_ARGS + " :\n" + NKT_USAGE_ADDTRADER);
+					sender.sendMessage(ERROR_BAD_ARGS + " 3:\n" + NKT_USAGE_ADDTRADER);
 
 					return true;
 				}
@@ -77,21 +74,26 @@ public class addTraderCmd implements CommandExecutor
 
 			int wPlace = getPlaceArg(args, "-w");
 			int nPlace = getPlaceArg(args, "-n");
+			int tPlace = getPlaceArg(args, "-t");
 
 			if(wPlace != -1)
 			{
 				if(args.length < wPlace + 4)
 				{
-					sender.sendMessage(ERROR_BAD_ARGS + " :\n" + NKT_USAGE_ADDTRADER);
+					sender.sendMessage(ERROR_BAD_ARGS + " 4:\n" + NKT_USAGE_ADDTRADER);
 
 					return true;
 				}
 
-				if(!args[wPlace + 5].equals("-n") && nPlace != -1)
+				//If more args after -w args
+				if(args.length > wPlace + 5)
 				{
-					sender.sendMessage(ERROR_BAD_ARGS + " :\n" + NKT_USAGE_ADDTRADER);
+					if(args[wPlace + 5].equals("-n") && args[wPlace + 5].equals("-t"))
+					{
+						sender.sendMessage(ERROR_BAD_ARGS + " 5:\n" + NKT_USAGE_ADDTRADER);
 
-					return true;
+						return true;
+					}
 				}
 
 				if(Bukkit.getWorld(args[wPlace + 1]) == null)
@@ -107,13 +109,13 @@ public class addTraderCmd implements CommandExecutor
 				{
 					if(!isNumber(args[wPlace + i]))
 					{
-						sender.sendMessage(ERROR_BAD_ARGS + " :\n" + NKT_USAGE_ADDTRADER);
+						sender.sendMessage(ERROR_BAD_ARGS + " 6:\n" + NKT_USAGE_ADDTRADER);
 
 						return true;
 					}
 				}
 
-				location = new Location(world, parseDouble(args[wPlace + 1]), parseDouble(args[wPlace + 2]), parseDouble(args[wPlace + 3]));
+				location = new Location(world, parseDouble(args[wPlace + 2]), parseDouble(args[wPlace + 3]), parseDouble(args[wPlace + 4]));
 			}
 			else
 			{
@@ -128,9 +130,9 @@ public class addTraderCmd implements CommandExecutor
 
 			if(nPlace != -1)
 			{
-				if(args.length < nPlace + 1)
+				if(args.length <= nPlace + 1)
 				{
-					sender.sendMessage(ERROR_BAD_ARGS + " :\n" + NKT_USAGE_ADDTRADER);
+					sender.sendMessage(ERROR_BAD_ARGS + " 7:\n" + NKT_USAGE_ADDTRADER);
 
 					return true;
 				}
@@ -151,7 +153,7 @@ public class addTraderCmd implements CommandExecutor
 
 					if(args[i].charAt(args[i].length() - 1) != '"')
 					{
-						sender.sendMessage(ERROR_BAD_ARGS + "\n" + NKT_USAGE_ADDTRADER);
+						sender.sendMessage(ERROR_BAD_ARGS + " 8:\n" + NKT_USAGE_ADDTRADER);
 
 						return true;
 					}
@@ -159,11 +161,16 @@ public class addTraderCmd implements CommandExecutor
 					nbArgsForN = j;
 				}
 
-				if(!args[nPlace + nbArgsForN + 1].equals("-w") && wPlace != -1)
+				//If more args after -n args
+				if(args.length > nPlace + nbArgsForN + 2)
 				{
-					sender.sendMessage(ERROR_BAD_ARGS + "\n" + NKT_USAGE_ADDTRADER);
+					if(!args[nPlace + nbArgsForN + 2].equals("-w") && !args[nPlace + nbArgsForN + 2].equals("-t"))
+					{
+						sender.sendMessage(args[nPlace + nbArgsForN + 1]);
+						sender.sendMessage(ERROR_BAD_ARGS + " 9:\n" + NKT_USAGE_ADDTRADER);
 
-					return true;
+						return true;
+					}
 				}
 
 				StringBuilder stringBuilder = new StringBuilder();
@@ -192,6 +199,29 @@ public class addTraderCmd implements CommandExecutor
 
 			}
 
+			if(tPlace != -1)
+			{
+				if(args.length <= tPlace + 1)
+				{
+					sender.sendMessage(ERROR_BAD_ARGS + " 10:\n" + NKT_USAGE_ADDTRADER);
+
+					return true;
+				}
+
+				//If more args after -t args
+				if(args.length > tPlace + 2)
+				{
+					if(!args[tPlace + 2].equals("-n") && !args[tPlace + 2].equals("-w"))
+					{
+						sender.sendMessage(ERROR_BAD_ARGS + " 11:\n" + NKT_USAGE_ADDTRADER);
+
+						return true;
+					}
+				}
+
+				type = args[tPlace + 1];
+			}
+
 			Trader trader;
 
 			if(args[0].equals("entity"))
@@ -202,7 +232,22 @@ public class addTraderCmd implements CommandExecutor
 					return true;
 				}
 
-				Entity entity = world.spawnEntity(location, EntityType.VILLAGER);
+				EntityType entityType = EntityType.valueOf("villager".toUpperCase());
+
+				if(tPlace != -1)
+				{
+					try
+					{
+						entityType = EntityType.valueOf(type.toUpperCase());
+					}
+					catch(Exception e)
+					{
+						e.printStackTrace();
+						sender.sendMessage(ERROR_ENTITY_TYPE + "");
+					}
+				}
+
+				Entity entity = world.spawnEntity(location, entityType);
 
 				if(entity instanceof LivingEntity)
 				{
@@ -215,7 +260,7 @@ public class addTraderCmd implements CommandExecutor
 					livingEntity.setCanPickupItems(false);
 				}
 
-				trader = new Trader(location, args[0], "villager");
+				trader = new Trader(location, args[0], type);
 
 				if(!name.equals(""))
 				{
@@ -227,11 +272,24 @@ public class addTraderCmd implements CommandExecutor
 			else
 			{
 				Block block = location.getBlock();
+				Material material = Material.CHEST;
+
+				if(tPlace != -1)
+				{
+					try
+					{
+						material = Material.valueOf(type.toUpperCase());
+					}
+					catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+				}
 
 				if(block.getType().isAir())
 				{
-					block.setType(Material.CHEST);
-					trader = new Trader(location, args[0], Material.CHEST.toString());
+					block.setType(material);
+					trader = new Trader(location, args[0], material.toString());
 				}
 				else
 				{
