@@ -5,11 +5,13 @@ import org.bukkit.ChatColor;
 public enum MsgUtils
 {
 
-	PREFIX(ChatColor.DARK_GRAY + "(" + ChatColor.DARK_RED + ChatColor.BOLD + "NKT" + ChatColor.RESET + ChatColor.DARK_GRAY + ")"),
+	PREFIX(ChatColor.DARK_GRAY + "(" + ChatColor.DARK_RED + ChatColor.BOLD + "NKT" + ChatColor.RESET + ChatColor.DARK_GRAY + ") "),
 
 	PREFIX_ERROR(PREFIX.toString() + ChatColor.DARK_RED),
 	PREFIX_SUCCESS(PREFIX.toString() + ChatColor.GREEN),
-	PREFIX_USAGE(PREFIX.toString() + ChatColor.GOLD),
+	PREFIX_USAGE(PREFIX.toString() + ChatColor.RED + "Usage: " + ChatColor.GOLD),
+
+	SUCCES_ADDTRADER(PREFIX_SUCCESS + "Trader added successfully"),
 
 	// #################
 	// Errors
@@ -21,6 +23,7 @@ public enum MsgUtils
 	ERROR_BAD_ARGS(PREFIX_ERROR + "Un ou plusieurs argument(s) ne sont pas correcte(s), verifiez la syntaxe."),
 	ERROR_TOO_MANY_ARGS(PREFIX_ERROR + "Erreur syntax, trop d'arguments"),
 	ERROR_TRY_KILL_TRADER(PREFIX_ERROR + "Hey ! Pas gentil ça !"),
+	ERROR_NAME_LENGTH(PREFIX_ERROR + "Nom trop long (100 max)"),
 	ERROR_WORLD_NOT_EXIST(PREFIX_ERROR + "Le monde que vous voulez spécifier semble ne pas exister");
 
 	private String name;

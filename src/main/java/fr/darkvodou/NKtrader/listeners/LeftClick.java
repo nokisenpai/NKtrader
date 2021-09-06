@@ -9,7 +9,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 public class LeftClick implements Listener
 {
-	TraderManager traderManager = null;
+	TraderManager traderManager;
 
 	public LeftClick(TraderManager traderManager)
 	{
@@ -19,10 +19,13 @@ public class LeftClick implements Listener
 	@EventHandler
 	public void onLeftClick(final PlayerInteractEvent event)
 	{
-		if(event.getAction().equals(Action.LEFT_CLICK_BLOCK) && traderManager.hasTrader(event.getClickedBlock().getLocation()))
+		if(event.getClickedBlock() != null)
 		{
-			event.getPlayer().sendMessage(MsgUtils.ERROR_TRY_KILL_TRADER + "");
-			event.setCancelled(true);
+			if(event.getAction().equals(Action.LEFT_CLICK_BLOCK) && traderManager.hasTrader(event.getClickedBlock().getLocation()))
+			{
+				event.getPlayer().sendMessage(MsgUtils.ERROR_TRY_KILL_TRADER + "");
+				event.setCancelled(true);
+			}
 		}
 	}
 }
