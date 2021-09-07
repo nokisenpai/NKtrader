@@ -20,9 +20,6 @@ import static java.lang.Double.parseDouble;
 public class addTraderCmd implements CommandExecutor
 {
 	private final Manager manager;
-	private String name = "";
-	private World world = Bukkit.getWorld("world");
-	private String type;
 
 	public addTraderCmd(Manager manager)
 	{
@@ -32,7 +29,10 @@ public class addTraderCmd implements CommandExecutor
 	@Override
 	public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args)
 	{
+		String type = "";
+		String name = "";
 		Location location;
+		World world = Bukkit.getWorld("world");
 
 		if(sender instanceof ConsoleCommandSender)
 		{
@@ -242,8 +242,8 @@ public class addTraderCmd implements CommandExecutor
 					}
 					catch(Exception e)
 					{
-						e.printStackTrace();
 						sender.sendMessage(ERROR_ENTITY_TYPE + "");
+						return true;
 					}
 				}
 
@@ -276,14 +276,15 @@ public class addTraderCmd implements CommandExecutor
 
 				if(tPlace != -1)
 				{
-					try
+					material = Material.getMaterial(type.toUpperCase());
+
+					if(material == null)
 					{
-						material = Material.valueOf(type.toUpperCase());
+						sender.sendMessage(ERROR_MATERIAL_TYPE + "");
+
+						return true;
 					}
-					catch(Exception e)
-					{
-						e.printStackTrace();
-					}
+					sender.sendMessage(DEBUG + block.getBlockData().toString());
 				}
 
 				if(block.getType().isAir())
@@ -306,7 +307,7 @@ public class addTraderCmd implements CommandExecutor
 					}
 
 					Location loct = location.getBlock().getLocation();
-					loct.add(0.5, -1.0, 0.5);
+					loct.add(0.5, 1.0, 0.5);
 					Entity armor_stand = world.spawnEntity(loct, EntityType.ARMOR_STAND);
 
 					if(armor_stand instanceof LivingEntity)
@@ -316,6 +317,7 @@ public class addTraderCmd implements CommandExecutor
 						livingEntity.setGravity(false);
 						livingEntity.setPersistent(true);
 						livingEntity.setCollidable(false);
+						((ArmorStand) livingEntity).setMarker(true);
 					}
 
 					trader.setName(name);

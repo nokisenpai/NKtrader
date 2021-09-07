@@ -10,6 +10,7 @@ public enum MsgUtils
 	PREFIX_ERROR(PREFIX.toString() + ChatColor.DARK_RED),
 	PREFIX_SUCCESS(PREFIX.toString() + ChatColor.GREEN),
 	PREFIX_USAGE(PREFIX.toString() + ChatColor.RED + "Usage: " + ChatColor.GOLD),
+	DEBUG(PREFIX.toString() + ChatColor.GOLD + "DEBUG: " + ChatColor.YELLOW),
 
 	SUCCES_ADDTRADER(PREFIX_SUCCESS + "Trader added successfully"),
 
@@ -25,6 +26,7 @@ public enum MsgUtils
 	ERROR_TRY_KILL_TRADER(PREFIX_ERROR + "Hey ! Pas gentil ça !"),
 	ERROR_NAME_LENGTH(PREFIX_ERROR + "Nom trop long (100 max)"),
 	ERROR_ENTITY_TYPE(PREFIX_ERROR + "L'entityType précisé n'existe pas"),
+	ERROR_MATERIAL_TYPE(PREFIX_ERROR + "Le materialType précisé n'existe pas"),
 	ERROR_WORLD_NOT_EXIST(PREFIX_ERROR + "Le monde que vous voulez spécifier semble ne pas exister");
 
 	private String name;
