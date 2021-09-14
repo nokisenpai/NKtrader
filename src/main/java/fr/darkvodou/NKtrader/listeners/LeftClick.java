@@ -21,7 +21,7 @@ public class LeftClick implements Listener
 	{
 		if(event.getClickedBlock() != null)
 		{
-			if(event.getAction().equals(Action.LEFT_CLICK_BLOCK) && traderManager.hasTrader(event.getClickedBlock().getLocation()))
+			if(event.getAction().equals(Action.LEFT_CLICK_BLOCK) && traderManager.existTrader(event.getClickedBlock().getLocation()))
 			{
 				event.getPlayer().sendMessage(MsgUtils.ERROR_TRY_KILL_TRADER + "");
 				event.setCancelled(true);

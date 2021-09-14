@@ -1,9 +1,8 @@
 package fr.darkvodou.NKtrader.cmds;
 
 import fr.darkvodou.NKtrader.entity.Trader;
-import fr.darkvodou.NKtrader.managers.Manager;
+import fr.darkvodou.NKtrader.managers.TraderManager;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -19,21 +18,16 @@ import static java.lang.Double.parseDouble;
 
 public class addTraderCmd implements CommandExecutor
 {
-	private final Manager manager;
+	private final TraderManager traderManager;
 
-	public addTraderCmd(Manager manager)
+	public addTraderCmd(TraderManager traderManager)
 	{
-		this.manager = manager;
+		this.traderManager = traderManager;
 	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args)
 	{
-		String type = "";
-		String name = "";
-		Location location;
-		World world = Bukkit.getWorld("world");
-
 		if(sender instanceof ConsoleCommandSender)
 		{
 			return true;
@@ -41,6 +35,11 @@ public class addTraderCmd implements CommandExecutor
 
 		if(sender instanceof Player)
 		{
+			String dataType;
+			String name = "";
+			Location location;
+			World world;
+
 			if(!hasAddTraderPermissions(sender))
 			{
 				sender.sendMessage(ERROR_HAS_NOT_PERM + " node : " + NKT_ADD_TRADER);
@@ -50,14 +49,14 @@ public class addTraderCmd implements CommandExecutor
 
 			if(args.length == 0)
 			{
-				sender.sendMessage("1 :" + NKT_USAGE_ADDTRADER);
+				sender.sendMessage("" + NKT_USAGE_ADDTRADER);
 
 				return true;
 			}
 
 			if(!args[0].equals("entity") && !args[0].equals("block"))
 			{
-				sender.sendMessage(ERROR_BAD_ARGS + " 2:\n" + NKT_USAGE_ADDTRADER);
+				sender.sendMessage(ERROR_BAD_ARGS + " :\n" + NKT_USAGE_ADDTRADER);
 
 				return true;
 			}
@@ -66,7 +65,7 @@ public class addTraderCmd implements CommandExecutor
 			{
 				if(!args[1].equals("-n") && !args[1].equals("-w") && !args[1].equals("-t"))
 				{
-					sender.sendMessage(ERROR_BAD_ARGS + " 3:\n" + NKT_USAGE_ADDTRADER);
+					sender.sendMessage(ERROR_BAD_ARGS + " :\n" + NKT_USAGE_ADDTRADER);
 
 					return true;
 				}
@@ -80,7 +79,7 @@ public class addTraderCmd implements CommandExecutor
 			{
 				if(args.length < wPlace + 4)
 				{
-					sender.sendMessage(ERROR_BAD_ARGS + " 4:\n" + NKT_USAGE_ADDTRADER);
+					sender.sendMessage(ERROR_BAD_ARGS + " :\n" + NKT_USAGE_ADDTRADER);
 
 					return true;
 				}
@@ -90,7 +89,7 @@ public class addTraderCmd implements CommandExecutor
 				{
 					if(args[wPlace + 5].equals("-n") && args[wPlace + 5].equals("-t"))
 					{
-						sender.sendMessage(ERROR_BAD_ARGS + " 5:\n" + NKT_USAGE_ADDTRADER);
+						sender.sendMessage(ERROR_BAD_ARGS + " :\n" + NKT_USAGE_ADDTRADER);
 
 						return true;
 					}
@@ -109,7 +108,7 @@ public class addTraderCmd implements CommandExecutor
 				{
 					if(!isNumber(args[wPlace + i]))
 					{
-						sender.sendMessage(ERROR_BAD_ARGS + " 6:\n" + NKT_USAGE_ADDTRADER);
+						sender.sendMessage(ERROR_BAD_ARGS + " :\n" + NKT_USAGE_ADDTRADER);
 
 						return true;
 					}
@@ -122,9 +121,10 @@ public class addTraderCmd implements CommandExecutor
 				location = ((Player) sender).getLocation();
 			}
 
-			if(manager.getTraderManager().hasTrader(location))
+			if(traderManager.existTrader(location))
 			{
 				sender.sendMessage(ERROR_TRADER_IS_SET + "");
+
 				return true;
 			}
 
@@ -132,7 +132,7 @@ public class addTraderCmd implements CommandExecutor
 			{
 				if(args.length <= nPlace + 1)
 				{
-					sender.sendMessage(ERROR_BAD_ARGS + " 7:\n" + NKT_USAGE_ADDTRADER);
+					sender.sendMessage(ERROR_BAD_ARGS + " :\n" + NKT_USAGE_ADDTRADER);
 
 					return true;
 				}
@@ -145,21 +145,33 @@ public class addTraderCmd implements CommandExecutor
 				//If name composed increase nbArgs by the length of the composed name
 				if(args[nPlace + 1].charAt(0) == '"')
 				{
+					StringBuilder stringBuilder = new StringBuilder();
 
 					for(i = nPlace + 1; i < args.length && args[i].charAt(args[i].length() - 1) != '"'; i++)
 					{
 						j++;
+						stringBuilder.append(args[i]);
+						stringBuilder.append(" ");
 					}
+
+					stringBuilder.deleteCharAt(stringBuilder.length() - 1);
 
 					if(args[i].charAt(args[i].length() - 1) != '"')
 					{
-						sender.sendMessage(ERROR_BAD_ARGS + " 8:\n" + NKT_USAGE_ADDTRADER);
+						sender.sendMessage(ERROR_BAD_ARGS + " :\n" + NKT_USAGE_ADDTRADER);
 
 						return true;
 					}
 
+					name = stringBuilder.toString();
+
 					nbArgsForN = j;
 				}
+				else
+				{
+					name = args[nPlace + 1];
+				}
+				name = name.replace("\"", "");
 
 				//If more args after -n args
 				if(args.length > nPlace + nbArgsForN + 2)
@@ -167,26 +179,11 @@ public class addTraderCmd implements CommandExecutor
 					if(!args[nPlace + nbArgsForN + 2].equals("-w") && !args[nPlace + nbArgsForN + 2].equals("-t"))
 					{
 						sender.sendMessage(args[nPlace + nbArgsForN + 1]);
-						sender.sendMessage(ERROR_BAD_ARGS + " 9:\n" + NKT_USAGE_ADDTRADER);
+						sender.sendMessage(ERROR_BAD_ARGS + " :\n" + NKT_USAGE_ADDTRADER);
 
 						return true;
 					}
 				}
-
-				StringBuilder stringBuilder = new StringBuilder();
-
-				for(i = nPlace + 1; i <= nPlace + j + 1; i++)
-				{
-					stringBuilder.append(args[i]);
-
-					if(i != nPlace + j + 1)
-					{
-						stringBuilder.append(" ");
-					}
-				}
-
-				name = stringBuilder.toString();
-				name = name.replace("\"", "");
 
 				if(name.length() > 100)
 				{
@@ -203,7 +200,7 @@ public class addTraderCmd implements CommandExecutor
 			{
 				if(args.length <= tPlace + 1)
 				{
-					sender.sendMessage(ERROR_BAD_ARGS + " 10:\n" + NKT_USAGE_ADDTRADER);
+					sender.sendMessage(ERROR_BAD_ARGS + " :\n" + NKT_USAGE_ADDTRADER);
 
 					return true;
 				}
@@ -213,122 +210,49 @@ public class addTraderCmd implements CommandExecutor
 				{
 					if(!args[tPlace + 2].equals("-n") && !args[tPlace + 2].equals("-w"))
 					{
-						sender.sendMessage(ERROR_BAD_ARGS + " 11:\n" + NKT_USAGE_ADDTRADER);
+						sender.sendMessage(ERROR_BAD_ARGS + " :\n" + NKT_USAGE_ADDTRADER);
 
 						return true;
 					}
 				}
 
-				type = args[tPlace + 1];
+				dataType = args[tPlace + 1];
+			}
+			else
+			{
+				dataType = "villager";
 			}
 
 			Trader trader;
 
 			if(args[0].equals("entity"))
 			{
-				if(world == null)
+				trader = new Trader(location, args[0], dataType).setName(name).setType("entity").setLocation(location);
+
+				if(!traderManager.createTraderEntity(trader))
 				{
-					sender.sendMessage(ERROR_WORLD_NOT_EXIST + "");
+					sender.sendMessage(ERROR_ENTITY_TYPE + "");
+
 					return true;
-				}
-
-				EntityType entityType = EntityType.valueOf("villager".toUpperCase());
-
-				if(tPlace != -1)
-				{
-					try
-					{
-						entityType = EntityType.valueOf(type.toUpperCase());
-					}
-					catch(Exception e)
-					{
-						sender.sendMessage(ERROR_ENTITY_TYPE + "");
-						return true;
-					}
-				}
-
-				Entity entity = world.spawnEntity(location, entityType);
-
-				if(entity instanceof LivingEntity)
-				{
-					LivingEntity livingEntity = (LivingEntity) entity;
-					livingEntity.setInvulnerable(true);
-					livingEntity.setGravity(false);
-					livingEntity.setPersistent(true);
-					livingEntity.setAI(false);
-					livingEntity.setCollidable(false);
-					livingEntity.setCanPickupItems(false);
-				}
-
-				trader = new Trader(location, args[0], type);
-
-				if(!name.equals(""))
-				{
-					trader.setName(name);
-					entity.setCustomName(name);
-					entity.setCustomNameVisible(true);
 				}
 			}
 			else
 			{
-				Block block = location.getBlock();
-				Material material = Material.CHEST;
+				trader = new Trader(location, args[0], dataType).setName(name).setType("block").setLocation(location);
 
-				if(tPlace != -1)
+				if(traderManager.createTraderBlock(trader))
 				{
-					material = Material.getMaterial(type.toUpperCase());
+					sender.sendMessage(ERROR_MATERIAL_TYPE + "");
 
-					if(material == null)
-					{
-						sender.sendMessage(ERROR_MATERIAL_TYPE + "");
-
-						return true;
-					}
-					sender.sendMessage(DEBUG + block.getBlockData().toString());
-				}
-
-				if(block.getType().isAir())
-				{
-					block.setType(material);
-					trader = new Trader(location, args[0], material.toString());
-				}
-				else
-				{
-					trader = new Trader(location, args[0], location.getBlock().getType().toString());
-				}
-
-				if(!name.equals(""))
-				{
-					if(world == null)
-					{
-						sender.sendMessage(ERROR_WORLD_NOT_EXIST + "");
-
-						return true;
-					}
-
-					Location loct = location.getBlock().getLocation();
-					loct.add(0.5, 1.0, 0.5);
-					Entity armor_stand = world.spawnEntity(loct, EntityType.ARMOR_STAND);
-
-					if(armor_stand instanceof LivingEntity)
-					{
-						LivingEntity livingEntity = (LivingEntity) armor_stand;
-						livingEntity.setInvisible(true);
-						livingEntity.setGravity(false);
-						livingEntity.setPersistent(true);
-						livingEntity.setCollidable(false);
-						((ArmorStand) livingEntity).setMarker(true);
-					}
-
-					trader.setName(name);
-					armor_stand.setCustomName(name);
-					armor_stand.setCustomNameVisible(true);
+					return true;
 				}
 			}
 
-			if(!manager.getTraderManager().addTrader(trader))
+			if(!traderManager.addTrader(trader))
 			{
 				sender.sendMessage(ERROR_TRADER_IS_CONTAINED + ", look at console");
+
+				return true;
 			}
 
 			sender.sendMessage(SUCCES_ADDTRADER + "");
@@ -357,7 +281,7 @@ public class addTraderCmd implements CommandExecutor
 
 	private boolean hasAdminPermissions(CommandSender sender)
 	{
-		return sender.hasPermission("" + NKT_ADMIN) || sender.hasPermission("" + NKT_ALL);
+		return sender.hasPermission("" + ADMIN) || sender.hasPermission("" + ALL) || sender.hasPermission("" + NKT_ALL);
 	}
 
 	private boolean hasAddTraderPermissions(CommandSender sender)

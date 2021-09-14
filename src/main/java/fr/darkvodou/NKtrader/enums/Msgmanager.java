@@ -9,7 +9,7 @@ public enum Msgmanager
 	ERROR_TRADER_IS_SET(PREFIX_ERROR + "A trader is already here"),
 	ERROR_TRADER_NOT_FOUND(PREFIX_ERROR + "The following trader isn't register : ");
 
-	private String name;
+	private final String name;
 	Msgmanager(String name)
 	{
 		this.name = name;

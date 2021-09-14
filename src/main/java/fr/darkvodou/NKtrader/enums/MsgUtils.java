@@ -25,9 +25,10 @@ public enum MsgUtils
 	ERROR_TOO_MANY_ARGS(PREFIX_ERROR + "Erreur syntax, trop d'arguments"),
 	ERROR_TRY_KILL_TRADER(PREFIX_ERROR + "Hey ! Pas gentil ça !"),
 	ERROR_NAME_LENGTH(PREFIX_ERROR + "Nom trop long (100 max)"),
-	ERROR_ENTITY_TYPE(PREFIX_ERROR + "L'entityType précisé n'existe pas"),
-	ERROR_MATERIAL_TYPE(PREFIX_ERROR + "Le materialType précisé n'existe pas"),
-	ERROR_WORLD_NOT_EXIST(PREFIX_ERROR + "Le monde que vous voulez spécifier semble ne pas exister");
+	ERROR_ENTITY_TYPE(PREFIX_ERROR + "L'entité précisé n'existe pas"),
+	ERROR_MATERIAL_TYPE(PREFIX_ERROR + "Le block précisé n'existe pas"),
+	ERROR_REGISTER_COMMAND(PREFIX_ERROR + "La commande suivante a mal été enregistré :"),
+	ERROR_WORLD_NOT_EXIST(PREFIX_ERROR + "Le monde que vous avez spécifié semble ne pas exister");
 
 	private String name;
 
