@@ -18,6 +18,16 @@ public class Trader
 		this.dataType = dataType;
 	}
 
+	public Trader(Location location, String type, String dataType, String name)
+	{
+		this.id = location.getWorld().getName() + location.getBlockX() + location.getBlockY() + location.getBlockZ();
+		this.location = location;
+		this.type = type;
+		this.dataType = dataType;
+		this.name = name;
+	}
+
+	@SuppressWarnings("unused")
 	public Trader setId(String id)
 	{
 		this.id = id;
@@ -25,6 +35,7 @@ public class Trader
 		return this;
 	}
 
+	@SuppressWarnings("unused")
 	public Trader setType(String type)
 	{
 		this.type = type;
@@ -32,6 +43,7 @@ public class Trader
 		return this;
 	}
 
+	@SuppressWarnings("unused")
 	public Trader setDataType(String dataType)
 	{
 		this.dataType = dataType;
@@ -46,6 +58,7 @@ public class Trader
 		return this;
 	}
 
+	@SuppressWarnings("unused")
 	public Trader setLocation(Location location)
 	{
 		this.location = location;

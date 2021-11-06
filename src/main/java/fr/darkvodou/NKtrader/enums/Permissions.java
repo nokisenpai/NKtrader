@@ -9,7 +9,8 @@ public enum Permissions
 	//Permissions admins
 	//#########################
 
-	NKT_ADMIN(PLUGIN_NAME + ".admin"),
+	ALL("*"),
+	ADMIN(PLUGIN_NAME + "admin"),
 	NKT_ALL(PLUGIN_NAME + ".*"),
 
 	//#########################
