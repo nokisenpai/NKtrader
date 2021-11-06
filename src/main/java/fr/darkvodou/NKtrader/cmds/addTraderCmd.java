@@ -15,6 +15,7 @@ import static fr.darkvodou.NKtrader.enums.Permissions.*;
 import static fr.darkvodou.NKtrader.enums.Usages.*;
 import static fr.darkvodou.NKtrader.utils.CheckType.isNumber;
 import static java.lang.Double.parseDouble;
+import static fr.darkvodou.NKtrader.utils.GetArgs.getPlaceArg;
 
 public class addTraderCmd implements CommandExecutor
 {
@@ -259,24 +260,6 @@ public class addTraderCmd implements CommandExecutor
 		}
 
 		return true;
-	}
-
-	private int getPlaceArg(String[] args, String argToFind)
-	{
-		int i = 0;
-
-		for(String arg : args)
-		{
-			if(arg.equals(argToFind))
-			{
-
-				return i;
-			}
-
-			i++;
-		}
-
-		return -1;
 	}
 
 	private boolean hasAdminPermissions(CommandSender sender)
