@@ -1,6 +1,6 @@
 package fr.darkvodou.NKtrader;
 
-import fr.darkvodou.NKtrader.cmds.addTraderCmd;
+import fr.darkvodou.NKtrader.cmds.AddTraderCmd;
 import fr.darkvodou.NKtrader.enums.MsgUtils;
 import fr.darkvodou.NKtrader.listeners.LeftClick;
 import fr.darkvodou.NKtrader.managers.Manager;
@@ -50,7 +50,7 @@ public class NKtrader extends JavaPlugin
 
 		if( addTraderCommand !=null)
 		{
-			addTraderCommand.setExecutor(new addTraderCmd(manager.getTraderManager()));
+			addTraderCommand.setExecutor(new AddTraderCmd(manager.getTraderManager()));
 		}
 		else
 		{

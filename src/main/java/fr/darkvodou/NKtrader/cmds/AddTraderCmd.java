@@ -17,11 +17,11 @@ import static fr.darkvodou.NKtrader.utils.CheckType.isNumber;
 import static java.lang.Double.parseDouble;
 import static fr.darkvodou.NKtrader.utils.GetArgs.getPlaceArg;
 
-public class addTraderCmd implements CommandExecutor
+public class AddTraderCmd implements CommandExecutor
 {
 	private final TraderManager traderManager;
 
-	public addTraderCmd(TraderManager traderManager)
+	public AddTraderCmd(TraderManager traderManager)
 	{
 		this.traderManager = traderManager;
 	}
