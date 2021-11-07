@@ -4,12 +4,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import static fr.darkvodou.NKtrader.enums.Msgmanager.*;
+import static fr.darkvodou.NKtrader.enums.Msgmanager.ERROR_CONFIG_USE_SQL_IS_FALSE;
 
 public class ConfigManager
 {
-	private ConsoleCommandSender console = null;
-	private FileConfiguration config = null;
+	private ConsoleCommandSender console;
+	private FileConfiguration config;
 
 	private String dbHost = null;
 	private int dbPort = 3306;
@@ -19,6 +19,8 @@ public class ConfigManager
 
 	public static String PREFIXTABLE = null;
 	public static String SERVERNAME = null;
+
+	public static int distanceTarget = -1;
 
 	// Constructor
 	public ConfigManager(FileConfiguration config)
@@ -49,6 +51,9 @@ public class ConfigManager
 		// Get server name gave to bungeecord config
 		SERVERNAME = config.getString("server-name", "world");
 
+		//Get distance target for Block and Entity trader
+		distanceTarget = config.getInt("distance-target");
+
 		return true;
 	}
 
@@ -76,4 +81,6 @@ public class ConfigManager
 	{
 		return dbPassword;
 	}
+
+	public int getDistanceTarget() {return distanceTarget;}
 }

@@ -1,5 +1,6 @@
 package fr.darkvodou.NKtrader.entity;
 
+import fr.darkvodou.NKtrader.managers.TraderManager;
 import org.bukkit.Location;
 
 public class Trader
@@ -12,7 +13,7 @@ public class Trader
 
 	public Trader(Location location, String type, String dataType)
 	{
-		this.id = location.getWorld().getName() + location.getBlockX() + location.getBlockY() + location.getBlockZ();
+		this.id = TraderManager.locationToId(location);
 		this.location = location;
 		this.type = type;
 		this.dataType = dataType;

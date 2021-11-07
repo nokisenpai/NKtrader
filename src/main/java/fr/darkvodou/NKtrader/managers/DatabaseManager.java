@@ -7,17 +7,18 @@ import org.bukkit.command.ConsoleCommandSender;
 
 import java.sql.*;
 
-import static fr.darkvodou.NKtrader.enums.MsgUtils.*;
+import static fr.darkvodou.NKtrader.enums.MsgUtils.PREFIX_ERROR;
+import static fr.darkvodou.NKtrader.enums.MsgUtils.PREFIX_SUCCESS;
 import static fr.darkvodou.NKtrader.managers.ConfigManager.PREFIXTABLE;
 
 public class DatabaseManager
 {
 	private static Connection bdd = null;
 
-	private ConsoleCommandSender console = null;
-	private fr.darkvodou.NKtrader.managers.ConfigManager configManager = null;
+	private ConsoleCommandSender console;
+	private ConfigManager configManager;
 
-	public DatabaseManager(fr.darkvodou.NKtrader.managers.ConfigManager configManager)
+	public DatabaseManager(ConfigManager configManager)
 	{
 		this.console = Bukkit.getConsoleSender();
 		this.configManager = configManager;
@@ -27,7 +28,7 @@ public class DatabaseManager
 	{
 		TRADER(PREFIXTABLE + "trader");
 
-		private String name = "";
+		private String name;
 
 		table(String name)
 		{
@@ -158,7 +159,7 @@ public class DatabaseManager
 		{
 			bdd = getConnection();
 
-			String req = null;
+			String req;
 			Statement s = null;
 
 			console.sendMessage(PREFIX_SUCCESS + " Creating Database structure ...");

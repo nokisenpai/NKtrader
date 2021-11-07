@@ -2,20 +2,22 @@ package fr.darkvodou.NKtrader.cmds;
 
 import fr.darkvodou.NKtrader.entity.Trader;
 import fr.darkvodou.NKtrader.managers.TraderManager;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Player;
 
 import static fr.darkvodou.NKtrader.enums.MsgUtils.*;
 import static fr.darkvodou.NKtrader.enums.Msgmanager.ERROR_TRADER_IS_CONTAINED;
 import static fr.darkvodou.NKtrader.enums.Msgmanager.ERROR_TRADER_IS_SET;
 import static fr.darkvodou.NKtrader.enums.Permissions.*;
-import static fr.darkvodou.NKtrader.enums.Usages.*;
+import static fr.darkvodou.NKtrader.enums.Usages.NKT_USAGE_ADDTRADER;
 import static fr.darkvodou.NKtrader.utils.CheckType.isNumber;
-import static java.lang.Double.parseDouble;
 import static fr.darkvodou.NKtrader.utils.GetArgs.getPlaceArg;
+import static java.lang.Double.parseDouble;
 
 public class AddTraderCmd implements CommandExecutor
 {

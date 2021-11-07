@@ -1,6 +1,6 @@
 package fr.darkvodou.NKtrader.enums;
 
-import static fr.darkvodou.NKtrader.enums.MsgUtils.*;
+import static fr.darkvodou.NKtrader.enums.MsgUtils.PREFIX_ERROR;
 
 public enum Msgmanager
 {

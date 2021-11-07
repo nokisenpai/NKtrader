@@ -1,6 +1,7 @@
 package fr.darkvodou.NKtrader;
 
 import fr.darkvodou.NKtrader.cmds.AddTraderCmd;
+import fr.darkvodou.NKtrader.cmds.RemoveTraderCmd;
 import fr.darkvodou.NKtrader.enums.MsgUtils;
 import fr.darkvodou.NKtrader.listeners.LeftClick;
 import fr.darkvodou.NKtrader.managers.Manager;
@@ -9,9 +10,11 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import static fr.darkvodou.NKtrader.enums.MsgUtils.PREFIX_ERROR;
 import static fr.darkvodou.NKtrader.enums.MsgUtils.PREFIX_SUCCESS;
 
 public class NKtrader extends JavaPlugin
@@ -47,14 +50,28 @@ public class NKtrader extends JavaPlugin
 
 		//Register commands
 		PluginCommand addTraderCommand = getCommand("addtrader");
+		PluginCommand removeTraderCommand = getCommand("removetrader");
 
-		if( addTraderCommand !=null)
+		if(addTraderCommand != null)
 		{
 			addTraderCommand.setExecutor(new AddTraderCmd(manager.getTraderManager()));
 		}
 		else
 		{
 			console.sendMessage(MsgUtils.ERROR_REGISTER_COMMAND + "addtrader");
+			console.sendMessage(PREFIX_ERROR + "disabling plugin");
+			disablePlugin();
+		}
+
+		if(removeTraderCommand != null)
+		{
+			removeTraderCommand.setExecutor(new RemoveTraderCmd(manager.getTraderManager(), manager.getConfigManager()));
+		}
+		else
+		{
+			console.sendMessage(MsgUtils.ERROR_REGISTER_COMMAND + "removeTrader");
+			console.sendMessage(PREFIX_ERROR + "disabling plugin");
+			disablePlugin();
 		}
 
 		console.sendMessage(PREFIX_SUCCESS + ": Ready !");
