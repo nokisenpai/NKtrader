@@ -9,12 +9,7 @@ import fr.darkvodou.NKtrader.managers.Manager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static fr.darkvodou.NKtrader.enums.MsgUtils.PREFIX_ERROR;
 import static fr.darkvodou.NKtrader.enums.MsgUtils.PREFIX_SUCCESS;
@@ -23,7 +18,6 @@ public class NKtrader extends JavaPlugin
 {
 	private static NKtrader plugin = null;
 	private Manager manager = null;
-	private final List<Listener> listeners = new ArrayList<>();
 
 	@Override
 	public void onEnable()
