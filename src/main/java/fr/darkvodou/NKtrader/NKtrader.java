@@ -4,10 +4,12 @@ import fr.darkvodou.NKtrader.cmds.AddTraderCmd;
 import fr.darkvodou.NKtrader.cmds.RemoveTraderCmd;
 import fr.darkvodou.NKtrader.enums.MsgUtils;
 import fr.darkvodou.NKtrader.listeners.LeftClick;
+import fr.darkvodou.NKtrader.managers.ListenerManager;
 import fr.darkvodou.NKtrader.managers.Manager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -39,14 +41,11 @@ public class NKtrader extends JavaPlugin
 			return;
 		}
 
-		//create event
-		listeners.add(new LeftClick(manager.getTraderManager()));
+		//events
+		ListenerManager listenerManager = manager.getListenerManager();
+		listenerManager.add(new LeftClick(manager.getTraderManager()), "leftClick");
 
-		//register event
-		for(Listener event : listeners)
-		{
-			getServer().getPluginManager().registerEvents(event, this);
-		}
+		listenerManager.registerAll();
 
 		//Register commands
 		PluginCommand addTraderCommand = getCommand("addtrader");
