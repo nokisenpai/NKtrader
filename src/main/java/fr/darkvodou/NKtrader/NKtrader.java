@@ -6,9 +6,11 @@ import fr.darkvodou.NKtrader.enums.MsgUtils;
 import fr.darkvodou.NKtrader.listeners.LeftClick;
 import fr.darkvodou.NKtrader.managers.ListenerManager;
 import fr.darkvodou.NKtrader.managers.Manager;
+import fr.darkvodou.NKtrader.managers.TraderManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import static fr.darkvodou.NKtrader.enums.MsgUtils.PREFIX_ERROR;
@@ -37,7 +39,8 @@ public class NKtrader extends JavaPlugin
 
 		//events
 		ListenerManager listenerManager = manager.getListenerManager();
-		listenerManager.add(new LeftClick(manager.getTraderManager()), "leftClick");
+		TraderManager traderManager = manager.getTraderManager();
+		listenerManager.add(new LeftClick(traderManager), "leftClick");
 
 		listenerManager.registerAll();
 
@@ -47,7 +50,7 @@ public class NKtrader extends JavaPlugin
 
 		if(addTraderCommand != null)
 		{
-			addTraderCommand.setExecutor(new AddTraderCmd(manager.getTraderManager()));
+			addTraderCommand.setExecutor(new AddTraderCmd(traderManager));
 		}
 		else
 		{
@@ -58,7 +61,7 @@ public class NKtrader extends JavaPlugin
 
 		if(removeTraderCommand != null)
 		{
-			removeTraderCommand.setExecutor(new RemoveTraderCmd(manager.getTraderManager(), manager.getConfigManager()));
+			removeTraderCommand.setExecutor(new RemoveTraderCmd(traderManager));
 		}
 		else
 		{

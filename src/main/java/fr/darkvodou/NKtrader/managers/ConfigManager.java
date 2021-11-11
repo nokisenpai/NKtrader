@@ -19,8 +19,7 @@ public class ConfigManager
 
 	public static String PREFIXTABLE = null;
 	public static String SERVERNAME = null;
-
-	public static int distanceTarget = -1;
+	public static int DISTANCETARGET = -1;
 
 	// Constructor
 	public ConfigManager(FileConfiguration config)
@@ -52,7 +51,7 @@ public class ConfigManager
 		SERVERNAME = config.getString("server-name", "world");
 
 		//Get distance target for Block and Entity trader
-		distanceTarget = config.getInt("distance-target");
+		DISTANCETARGET = config.getInt("distance-target");
 
 		return true;
 	}
@@ -81,6 +80,4 @@ public class ConfigManager
 	{
 		return dbPassword;
 	}
-
-	public int getDistanceTarget() {return distanceTarget;}
 }

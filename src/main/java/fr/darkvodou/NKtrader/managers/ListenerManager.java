@@ -12,39 +12,28 @@ public class ListenerManager
 {
 	private HashMap<String, Listener> listeners = new HashMap<>();
 
-	private Plugin plugin;
+	private final Plugin plugin;
 
-	@SuppressWarnings("unused")
 	public ListenerManager(Plugin plugin)
 	{
 		this.plugin = plugin;
 	}
 
-	@SuppressWarnings("unused")
 	public HashMap<String, Listener> getListeners()
 	{
 		return listeners;
 	}
 
-	@SuppressWarnings("unused")
 	public Plugin getPlugin()
 	{
 		return plugin;
 	}
 
-	@SuppressWarnings("unused")
 	public void setListeners(HashMap<String, Listener> listeners)
 	{
 		this.listeners = listeners;
 	}
 
-	@SuppressWarnings("unused")
-	public void setPlugin(Plugin plugin)
-	{
-		this.plugin = plugin;
-	}
-
-	@SuppressWarnings("unused")
 	public void add(Listener listener, String key)
 	{
 		listeners.put(key, listener);
@@ -53,27 +42,18 @@ public class ListenerManager
 	public void remove(Listener listener, String key)
 	{
 		listeners.remove(key);
-		unregister(listener);
 	}
 
-	@SuppressWarnings("unused")
 	public void removeAll()
 	{
 		listeners.forEach((key, value) -> remove(value, key));
 	}
 
-	public void unregister(Listener listener)
-	{
-		HandlerList.unregisterAll(listener);
-	}
-
-	@SuppressWarnings("unused")
 	public void unregisterAll()
 	{
-		HandlerList.unregisterAll();
+		HandlerList.unregisterAll(plugin);
 	}
 
-	@SuppressWarnings("unused")
 	public void registerAll()
 	{
 		PluginManager pluginManager = Bukkit.getPluginManager();

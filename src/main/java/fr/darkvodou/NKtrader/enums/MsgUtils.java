@@ -29,8 +29,8 @@ public enum MsgUtils
 	ERROR_MATERIAL_TYPE(PREFIX_ERROR + "Le block précisé n'existe pas"),
 	ERROR_REGISTER_COMMAND(PREFIX_ERROR + "La commande suivante a mal été enregistré :"),
 	ERROR_WORLD_NOT_EXIST(PREFIX_ERROR + "Le monde que vous avez spécifié semble ne pas exister"),
-	ERROR_CANT_REACH_TARGET(PREFIX_ERROR + "La cible que vous tenter de viser est trop loin où n'est pas visible"),
-	ERROR_ID_NULL(PREFIX_ERROR + "Le trader que vous tenter d'enlever n'a pas été trouvé");
+	ERROR_CANT_REACH_TARGET(PREFIX_ERROR + "La cible que vous tentez de viser est trop loin ou n'est pas visible"),
+	ERROR_ID_NULL(PREFIX_ERROR + "Le trader que vous tentez d'enlever n'a pas été trouvé");
 
 	private String name;
 

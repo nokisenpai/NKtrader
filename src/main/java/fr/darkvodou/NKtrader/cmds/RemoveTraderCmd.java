@@ -20,12 +20,10 @@ import static fr.darkvodou.NKtrader.enums.Usages.NKT_USAGE_REMOVETRADER;
 public class RemoveTraderCmd implements CommandExecutor
 {
 	private final TraderManager traderManager;
-	private final ConfigManager configManager;
 
-	public RemoveTraderCmd(TraderManager traderManager, ConfigManager configManager)
+	public RemoveTraderCmd(TraderManager traderManager)
 	{
 		this.traderManager = traderManager;
-		this.configManager = configManager;
 	}
 
 	@Override
@@ -49,31 +47,27 @@ public class RemoveTraderCmd implements CommandExecutor
 			return true;
 		}
 
-		Block block = null;
-		Entity entity = Targeter.getTargetEntity(Bukkit.getPlayer(sender.getName()));
-		Player player;
-		Location location = null;
+		Block block;
+		Player player = (Player) sender;
+		Entity entity = Targeter.getTargetEntity(player);
+		Location location;
+		block = player.getTargetBlockExact(ConfigManager.DISTANCETARGET);
 
-		if((player = (Bukkit.getPlayer(sender.getName()))) != null)
+		if(block == null)
 		{
-			block = player.getTargetBlockExact(configManager.getDistanceTarget());
-		}
+			if(entity == null)
+			{
+				sender.sendMessage("" + ERROR_CANT_REACH_TARGET);
 
-		if(block == null && entity == null)
-		{
-			sender.sendMessage("" + ERROR_CANT_REACH_TARGET);
-			return true;
-		}
+				return true;
+			}
 
-		if(block != null)
+			location = entity.getLocation();
+		}
+		else
 		{
 			location = block.getLocation();
 			block.setType(Material.AIR);
-		}
-
-		if(entity != null)
-		{
-			location = entity.getLocation();
 		}
 
 		if(traderManager.existTrader(location))
@@ -87,7 +81,7 @@ public class RemoveTraderCmd implements CommandExecutor
 				return true;
 			}
 
-				traderManager.removeTrader(id);
+			traderManager.removeTrader(id);
 		}
 
 		if(entity != null)

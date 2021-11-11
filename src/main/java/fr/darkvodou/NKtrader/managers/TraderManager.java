@@ -24,9 +24,9 @@ import static fr.darkvodou.NKtrader.enums.Msgmanager.ERROR_TRADER_NOT_FOUND;
 
 public class TraderManager
 {
-	private HashMap<String, Trader> traders = new HashMap<>();
-	private ConsoleCommandSender console;
-	private QueueManager queueManager;
+	private final HashMap<String, Trader> traders = new HashMap<>();
+	private final ConsoleCommandSender console;
+	private final QueueManager queueManager;
 
 	public TraderManager(ConsoleCommandSender console, Manager manager)
 	{
@@ -46,7 +46,7 @@ public class TraderManager
 			return null;
 		}
 
-		return location.getWorld().getName() + location.getBlockX() + location.getBlockY() + location.getBlockZ();
+		return location.getWorld().getName() + location.getBlockX() + "." + location.getBlockY() + "." + location.getBlockZ();
 	}
 
 	public boolean existTrader(Location location)
@@ -151,43 +151,21 @@ public class TraderManager
 		traders.remove(id);
 	}
 
-	@SuppressWarnings("unused")
 	public Trader getTrader(String id)
 	{
 		return traders.get(id);
 	}
 
-	@SuppressWarnings("unused")
 	public ConsoleCommandSender getConsole()
 	{
 		return console;
 	}
 
-	@SuppressWarnings("unused")
 	public QueueManager getQueueManager()
 	{
 		return queueManager;
 	}
 
-	@SuppressWarnings("unused")
-	public void setTraders(HashMap<String, Trader> traders)
-	{
-		this.traders = traders;
-	}
-
-	@SuppressWarnings("unused")
-	public void setConsole(ConsoleCommandSender console)
-	{
-		this.console = console;
-	}
-
-	@SuppressWarnings("unused")
-	public void setQueueManager(QueueManager queueManager)
-	{
-		this.queueManager = queueManager;
-	}
-
-	@SuppressWarnings("unused")
 	public HashMap<String, Trader> getTraders()
 	{
 		return this.traders;
