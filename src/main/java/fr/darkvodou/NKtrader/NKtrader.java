@@ -10,7 +10,6 @@ import fr.darkvodou.NKtrader.managers.TraderManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import static fr.darkvodou.NKtrader.enums.MsgUtils.PREFIX_ERROR;
