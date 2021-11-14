@@ -18,8 +18,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-import static fr.darkvodou.NKtrader.enums.Msgmanager.*;
-import static fr.darkvodou.NKtrader.enums.MsgUtils.*;
+import static fr.darkvodou.NKtrader.enums.MsgUtils.ERROR_WORLD_NOT_EXIST;
+import static fr.darkvodou.NKtrader.enums.Msgmanager.ERROR_TRADER_IS_CONTAINED;
+import static fr.darkvodou.NKtrader.enums.Msgmanager.ERROR_TRADER_NOT_FOUND;
 
 public class TraderManager
 {
@@ -38,6 +39,16 @@ public class TraderManager
 		return traders.containsKey(id);
 	}
 
+	public static String locationToId(Location location)
+	{
+		if(location.getWorld() == null)
+		{
+			return null;
+		}
+
+		return location.getWorld().getName() + location.getBlockX() + "." + location.getBlockY() + "." + location.getBlockZ();
+	}
+
 	public boolean existTrader(Location location)
 	{
 		if(location.getWorld() == null)
@@ -47,7 +58,7 @@ public class TraderManager
 			return false;
 		}
 
-		return traders.containsKey(location.getWorld().getName() + location.getBlockX() + location.getBlockY() + location.getBlockZ());
+		return traders.containsKey(locationToId(location));
 	}
 
 	public boolean addTrader(Trader trader)
@@ -104,7 +115,6 @@ public class TraderManager
 		return true;
 	}
 
-	@SuppressWarnings("unused")
 	public void removeTrader(String id)
 	{
 		if(!existTrader(id))
@@ -141,13 +151,21 @@ public class TraderManager
 		traders.remove(id);
 	}
 
-	@SuppressWarnings("unused")
 	public Trader getTrader(String id)
 	{
 		return traders.get(id);
 	}
 
-	@SuppressWarnings("unused")
+	public ConsoleCommandSender getConsole()
+	{
+		return console;
+	}
+
+	public QueueManager getQueueManager()
+	{
+		return queueManager;
+	}
+
 	public HashMap<String, Trader> getTraders()
 	{
 		return this.traders;
@@ -204,6 +222,11 @@ public class TraderManager
 			entityType = EntityType.valueOf(dataType.toUpperCase());
 		}
 		catch(Exception e)
+		{
+			return false;
+		}
+
+		if(location.getWorld() == null)
 		{
 			return false;
 		}

@@ -14,3 +14,4 @@ password:
 
 # The same name gave to Bungee config
 server-name: 'world'
+distance-target: 10

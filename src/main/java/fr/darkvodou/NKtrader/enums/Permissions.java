@@ -17,7 +17,8 @@ public enum Permissions
 	//Permissions for commands
 	//#########################
 
-	NKT_ADD_TRADER(PLUGIN_NAME + ".addtrader");
+	NKT_ADD_TRADER(PLUGIN_NAME + ".addtrader"),
+	NKT_REMOVE_TRADER(PLUGIN_NAME + ".removetrader");
 
 	private String name;
 

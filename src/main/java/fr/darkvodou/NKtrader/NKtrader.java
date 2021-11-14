@@ -1,24 +1,24 @@
 package fr.darkvodou.NKtrader;
 
 import fr.darkvodou.NKtrader.cmds.AddTraderCmd;
+import fr.darkvodou.NKtrader.cmds.RemoveTraderCmd;
 import fr.darkvodou.NKtrader.enums.MsgUtils;
 import fr.darkvodou.NKtrader.listeners.LeftClick;
+import fr.darkvodou.NKtrader.managers.ListenerManager;
 import fr.darkvodou.NKtrader.managers.Manager;
+import fr.darkvodou.NKtrader.managers.TraderManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import java.util.ArrayList;
-import java.util.List;
 
+import static fr.darkvodou.NKtrader.enums.MsgUtils.PREFIX_ERROR;
 import static fr.darkvodou.NKtrader.enums.MsgUtils.PREFIX_SUCCESS;
 
 public class NKtrader extends JavaPlugin
 {
 	private static NKtrader plugin = null;
 	private Manager manager = null;
-	private final List<Listener> listeners = new ArrayList<>();
 
 	@Override
 	public void onEnable()
@@ -36,25 +36,37 @@ public class NKtrader extends JavaPlugin
 			return;
 		}
 
-		//create event
-		listeners.add(new LeftClick(manager.getTraderManager()));
+		//events
+		ListenerManager listenerManager = manager.getListenerManager();
+		TraderManager traderManager = manager.getTraderManager();
+		listenerManager.add(new LeftClick(traderManager), "leftClick");
 
-		//register event
-		for(Listener event : listeners)
-		{
-			getServer().getPluginManager().registerEvents(event, this);
-		}
+		listenerManager.registerAll();
 
 		//Register commands
 		PluginCommand addTraderCommand = getCommand("addtrader");
+		PluginCommand removeTraderCommand = getCommand("removetrader");
 
-		if( addTraderCommand !=null)
+		if(addTraderCommand != null)
 		{
-			addTraderCommand.setExecutor(new AddTraderCmd(manager.getTraderManager()));
+			addTraderCommand.setExecutor(new AddTraderCmd(traderManager));
 		}
 		else
 		{
 			console.sendMessage(MsgUtils.ERROR_REGISTER_COMMAND + "addtrader");
+			console.sendMessage(PREFIX_ERROR + "disabling plugin");
+			disablePlugin();
+		}
+
+		if(removeTraderCommand != null)
+		{
+			removeTraderCommand.setExecutor(new RemoveTraderCmd(traderManager));
+		}
+		else
+		{
+			console.sendMessage(MsgUtils.ERROR_REGISTER_COMMAND + "removeTrader");
+			console.sendMessage(PREFIX_ERROR + "disabling plugin");
+			disablePlugin();
 		}
 
 		console.sendMessage(PREFIX_SUCCESS + ": Ready !");
